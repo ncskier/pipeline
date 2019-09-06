@@ -26,7 +26,11 @@ func ValidateParamTypesMatching(p *v1alpha1.Pipeline, pr *v1alpha1.PipelineRun) 
 	// Build a map of parameter names/types declared in p.
 	paramTypes := make(map[string]v1alpha1.ParamType)
 	for _, param := range p.Spec.Params {
-		paramTypes[param.Name] = param.Type
+		paramType := v1alpha1.ParamTypeString
+		if param.Type != "" {
+			paramType = param.Type
+		}
+		paramTypes[param.Name] = paramType
 	}
 
 	// Build a list of parameter names from pr that have mismatching types with the map created above.
